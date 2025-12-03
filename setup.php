@@ -47,15 +47,13 @@ function plugin_init_childticketmanager() {
    $PLUGIN_HOOKS['csrf_compliant']['childticketmanager'] = true;
 
    if (class_exists('PluginChildticketmanagerConfig')) {
-      $PLUGIN_HOOKS['add_javascript']['childticketmanager'] = [
-         'js/function.js',
-         'js/lodash.core.min.js',
-         'js/childticketmanager.js.php',
-      ];
-      
-      // avoid conflict with impact analysis
-      if (strpos($_SERVER['REQUEST_URI'], 'ticket.form.php') === false) {
-         unset($PLUGIN_HOOKS['add_javascript']['childticketmanager']);
+      // Load JavaScript only on ticket.form.php to avoid conflict with impact analysis
+      if (strpos($_SERVER['REQUEST_URI'], 'ticket.form.php') !== false) {
+         $PLUGIN_HOOKS['add_javascript']['childticketmanager'] = [
+            'js/function.js',
+            'js/lodash.core.min.js',
+            'js/childticketmanager.js.php',
+         ];
       }
 
       Plugin::registerClass('PluginChildticketmanagerConfig', [
